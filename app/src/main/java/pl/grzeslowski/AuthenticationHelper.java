@@ -284,7 +284,6 @@ class AuthenticationHelper {
                                             accessToken.idToken()))
                             .build());
         }
-
     }
 
     /**

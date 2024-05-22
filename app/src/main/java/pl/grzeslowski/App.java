@@ -1,23 +1,12 @@
 package pl.grzeslowski;
 
 import lombok.extern.slf4j.Slf4j;
+import software.amazon.awssdk.crt.Log;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.cognitoidentity.model.GetCredentialsForIdentityResponse;
-import software.amazon.awssdk.services.cognitoidentity.model.GetIdResponse;
-import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.ChallengeNameType;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.InitiateAuthRequest;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.RespondToAuthChallengeRequest;
 
-import java.math.BigInteger;
-import java.security.InvalidKeyException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Slf4j
 public class App {
@@ -36,6 +25,7 @@ public class App {
     private static final Set<ChallengeNameType> SUPPORTED_CHALLENGES = Set.of(ChallengeNameType.PASSWORD_VERIFIER);
 
     public static void main(String[] args) throws Exception {
+        software.amazon.awssdk.crt.Log.initLoggingToStderr(Log.LogLevel.Trace);
 
         if (args.length != 2) {
             throw new SalusException("Username and password are required");
@@ -56,5 +46,19 @@ public class App {
         var credentialsForIdentity = authenticationHelper.getCredentialsForIdentity(accessToken, id.identityId());
         log.info("Credentials: {}", credentialsForIdentity);
         // END LOGIN
+
+        // START MQTT
+        log.info("Connecting to MQTT");
+        var mqtt = new WsMqtt();
+        var connection = mqtt.buildConnection(
+                "a24u3z7zzwrtdl",
+                REGION.id(),
+//                "openhab-"+UUID.randomUUID(),
+                credentialsForIdentity.identityId(),
+                credentialsForIdentity,
+                username,
+                password);
+        mqtt.connect(connection);
+        // END MQTT
     }
 }

@@ -3,7 +3,7 @@ package pl.grzeslowski;
 import java.io.Serial;
 
 @SuppressWarnings("SerializableHasSerializationMethods")
-public class SalusException extends Exception{
+public class SalusException extends Exception {
     @Serial
     private static final long serialVersionUID = 1L;
 

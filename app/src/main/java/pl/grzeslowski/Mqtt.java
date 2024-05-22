@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 
 public class Mqtt {
     public void main() throws ExecutionException, InterruptedException {
-        Data cmdData =null; /*new Data(
+        Data cmdData = null; /*new Data(
                 "",
 
         );*/

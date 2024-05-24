@@ -71,6 +71,6 @@ public class App {
 
         log.info("Connecting to HTTP Shadow");
         var http = new Http();
-        http.shadow("SAU2AG1_GW-001E5E016472-it600WC-001E5E090204B76B", credentialsForIdentity);
+        http.shadow("SAU2AG1_GW-001E5E016472-it600ThermHW_AC-001E5E0902049083", credentialsForIdentity);
     }
 }

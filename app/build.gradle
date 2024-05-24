@@ -37,31 +37,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.32'
     annotationProcessor 'org.projectlombok:lombok:1.18.32'
 
-    // MQTT
-    implementation 'software.amazon.awssdk.iotdevicesdk:aws-iot-device-sdk:1.20.7'
     // jetty
     implementation group: 'org.eclipse.jetty', name: 'jetty-client', version: '12.0.9'
 
-//    implementation group: 'software.amazon.awssdk.crt', name: 'aws-crt', version: '0.29.19'
-//    implementation group: 'software.amazon.awssdk', name: 'aws-crt-client', version: '2.25.58'
-
-//    // AWS SDK Core
-//    implementation 'software.amazon.awssdk:sdk-core:2.20.9'
-//
-//    // AWS SDK Apache HTTP Client
-//    implementation 'software.amazon.awssdk:apache-client:2.20.9'
-//
-//    // Apache HttpClient
-//    implementation 'org.apache.httpcomponents.client5:httpclient5:5.1'
-//
-//    // AWS SDK Auth (for signing the requests)
-//    implementation 'software.amazon.awssdk:auth:2.20.9'
-//
-//    // AWS SDK HTTP Client SPI
-//    implementation 'software.amazon.awssdk:http-client-spi:2.20.9'
-//
-//    // AWS SDK IoT Device Gateway
-//    implementation 'software.amazon.awssdk:iotdevicegateway:2.20.9'
+    implementation group: 'software.amazon.awssdk.crt', name: 'aws-crt', version: '0.29.19'
 }
 
 application {

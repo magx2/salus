@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import software.amazon.awssdk.crt.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.crt.auth.signing.AwsSigner;
 import software.amazon.awssdk.crt.auth.signing.AwsSigningConfig;
+import software.amazon.awssdk.crt.http.HttpHeader;
 import software.amazon.awssdk.crt.http.HttpRequest;
 import software.amazon.awssdk.services.cognitoidentity.model.GetCredentialsForIdentityResponse;
 
@@ -29,7 +30,9 @@ public class Http {
 
         var time = ZonedDateTime.now(ZoneId.of("UTC"));
 
-        HttpRequest httpRequest = new HttpRequest("GET", path);
+        HttpRequest httpRequest = new HttpRequest("GET", "/things/%s/shadow".formatted(thing), new HttpHeader[]{
+                new HttpHeader("host", "")
+        }, null);
         try (var config = new AwsSigningConfig()) {
             config.setRegion("eu-central-1");
             config.setService("iotdevicegateway");
@@ -61,7 +64,7 @@ public class Http {
 //                                "Signature=%s".formatted(signature));
 //                var formatter = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'");
 //                headers.add("x-amz-date", time.format(formatter));
-                headers.add("Accept", "application/json");
+//                headers.add("Accept", "application/json");
 //                headers.add("x-amz-security-token", credentials.credentials().sessionToken());
                 for (var header : headers1) {
                     headers.add(header.getName(), header.getValue());

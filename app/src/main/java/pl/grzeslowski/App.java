@@ -7,6 +7,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowTyp
 import software.amazon.awssdk.services.cognitoidentityprovider.model.ChallengeNameType;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Slf4j
 public class App {
@@ -53,12 +54,23 @@ public class App {
         var connection = mqtt.buildConnection(
                 "a24u3z7zzwrtdl",
                 REGION.id(),
-//                "openhab-"+UUID.randomUUID(),
-                credentialsForIdentity.identityId(),
+                "openhab-" + UUID.randomUUID(),
+//                credentialsForIdentity.identityId(),
                 credentialsForIdentity,
                 username,
                 password);
-        mqtt.connect(connection);
+//        var connection = mqtt.cognito(
+//                "a24u3z7zzwrtdl",
+//                REGION.id(),
+//                "openhab-"+UUID.randomUUID(),
+//                id.identityId(),
+//                accessToken.idToken()
+//        );
+//        mqtt.connect(connection);
         // END MQTT
+
+        log.info("Connecting to HTTP Shadow");
+        var http = new Http();
+        http.shadow("SAU2AG1_GW-001E5E016472-it600WC-001E5E090204B76B", credentialsForIdentity);
     }
 }

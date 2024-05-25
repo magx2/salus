@@ -26,7 +26,9 @@ public class App {
     private static final Set<ChallengeNameType> SUPPORTED_CHALLENGES = Set.of(ChallengeNameType.PASSWORD_VERIFIER);
 
     public static void main(String[] args) throws Exception {
-        software.amazon.awssdk.crt.Log.initLoggingToStderr(Log.LogLevel.Trace);
+//        software.amazon.awssdk.crt.Log.initLoggingToStderr(Log.LogLevel.Trace);
+        var level = Log.LogLevel.Trace;
+        Log.initLoggingToFile(level, "./issues-586-%s.log".formatted(level.name()));
 
         if (args.length != 2) {
             throw new SalusException("Username and password are required");
@@ -66,11 +68,11 @@ public class App {
 //                id.identityId(),
 //                accessToken.idToken()
 //        );
-//        mqtt.connect(connection);
+        mqtt.connect(connection);
         // END MQTT
 
-        log.info("Connecting to HTTP Shadow");
-        var http = new Http();
-        http.shadow("SAU2AG1_GW-001E5E016472-it600ThermHW_AC-001E5E0902049083", credentialsForIdentity);
+//        log.info("Connecting to HTTP Shadow");
+//        var http = new Http();
+//        http.shadow("SAU2AG1_GW-001E5E016472-it600ThermHW_AC-001E5E0902049083", credentialsForIdentity);
     }
 }

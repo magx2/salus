@@ -6,8 +6,8 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AuthFlowType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.ChallengeNameType;
 
+import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Slf4j
 public class App {
@@ -51,24 +51,57 @@ public class App {
         // END LOGIN
 
         // START MQTT
-        log.info("Connecting to MQTT");
         var mqtt = new WsMqtt();
-        var connection = mqtt.buildConnection(
+        var clientIds = List.of(
+                "ASIAQ2NEK4GTDRMMQOFQ",
+                "eu-central-1:0d348ae1-a6b1-c9e8-39c4-5d339b3d2afa",
+                "ASIAQ2NEK4GTGABE7A2B/20240525/eu-central-1/iotdevicegateway/aws4_request",
+                "ASIAQ2NEK4GTGABE7A2B",
+                "salus",
+                "salus-eu",
+                "eu-central-1:60912c00-287d-413b-a2c9-ece3ccef9230",
+                "4pk5efh3v84g5dav43imsv4fbj",
+                "SA",
+                "SAL",
+                "0dd0ac86e9813d73206262af5a402db90d6a2fda9b037abecf6d9db10aa2b518",
+                "06c45c795babfdd4245dc3ca4c987479",
+                "Salus",
+                "BDicrWmnPk_EIC6fje4yVDddNylAl-PVqH9fT5ey0YdC2xvPXMbTCWafWJqUZPipbPxRzOOyxBh72s5zPh3Kcjs",
+                "BDicrWmnPk",
+                "EIC6fje4yVDddNylAl",
+                "PVqH9fT5ey0YdC2xvPXMbTCWafWJqUZPipbPxRzOOyxBh72s5zPh3Kcjs",
+                "BDicrWmnPk_EIC6fje4yVDddNylAl"
+        );
+        var ok = false;
+        for (var clientId : clientIds) {
+            log.info("Connecting to MQTT with clientId: {}", clientId);
+//            var connection = mqtt.buildConnection(
+//                    "a24u3z7zzwrtdl",
+//                    REGION.id(),
+//                    clientId,
+////                credentialsForIdentity.identityId(),
+//                    credentialsForIdentity,
+//                    username,
+//                    password);
+            var connection = mqtt.cognito(
                 "a24u3z7zzwrtdl",
                 REGION.id(),
-                "openhab-" + UUID.randomUUID(),
-//                credentialsForIdentity.identityId(),
-                credentialsForIdentity,
-                username,
-                password);
-//        var connection = mqtt.cognito(
-//                "a24u3z7zzwrtdl",
-//                REGION.id(),
-//                "openhab-"+UUID.randomUUID(),
-//                id.identityId(),
-//                accessToken.idToken()
-//        );
-        mqtt.connect(connection);
+                    clientId,
+                    id.identityId(),
+                    accessToken.idToken()
+            );
+            try {
+                mqtt.connect(connection);
+                log.info("CLIENT ID {} WORKS!!!", clientId);
+                ok = true;
+                break;
+            } catch (Exception e) {
+                log.error("Error connecting to MQTT {}", e.getLocalizedMessage());
+            }
+        }
+        if (!ok) {
+            throw new SalusException("No MQTT client works");
+        }
         // END MQTT
 
 //        log.info("Connecting to HTTP Shadow");

@@ -15,7 +15,6 @@ import software.amazon.awssdk.crt.mqtt.QualityOfService;
 import software.amazon.awssdk.iot.AwsIotMqttConnectionBuilder;
 import software.amazon.awssdk.services.cognitoidentity.model.GetCredentialsForIdentityResponse;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -49,7 +48,7 @@ public class WsMqtt {
 //                    .withWebsocketSigningRegion("eu-central-1_XGRz3CgoY")
 //                    .withWebsocketSigningRegion("XGRz3CgoY")
                     .withWebsocketSigningRegion("eu-central-1")
-                    .withClientId("SAU2AG1_GW-" + UUID.randomUUID())
+                    .withClientId(clientId)
                     .withWebsocketCredentialsProvider(
                             new StaticCredentialsProvider.StaticCredentialsProviderBuilder()
                                     .withAccessKeyId(credentialsForIdentity.credentials().accessKeyId().getBytes(UTF_8))
@@ -95,11 +94,11 @@ public class WsMqtt {
         String cognitoEndpoint = "cognito-idp.eu-central-1.amazonaws.com";
         cognitoBuilder.withEndpoint(cognitoEndpoint)
                 .withIdentity(cognitoIdentity)
-                .withLogin(new CognitoCredentialsProvider.CognitoLoginTokenPair(
+//                .withLogin(new CognitoCredentialsProvider.CognitoLoginTokenPair(
 //                        "cognito-idp.eu-central-1.amazonaws.com/eu-central-1_XGRz3CgoY",
-                        "eu-central-1_XGRz3CgoY",
-                        accessToken
-                ));
+////                        "eu-central-1_XGRz3CgoY",
+//                        accessToken)        )
+        ;
         cognitoBuilder.withClientBootstrap(ClientBootstrap.getOrCreateStaticDefault());
 
         TlsContextOptions cognitoTlsContextOptions = TlsContextOptions.createDefaultClient();
